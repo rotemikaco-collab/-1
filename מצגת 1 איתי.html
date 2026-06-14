@@ -1,0 +1,1328 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>אנטומיה | מפגש 01 — Fit House Academy</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;600;700;900&family=Inter:wght@300;400;600;700&display=swap');
+
+  :root {
+    --bg: #1e2228;
+    --surface: #272d36;
+    --card: #2f3640;
+    --accent: #7eb8c9;
+    --accent2: #c9a87e;
+    --text: #e8ecf0;
+    --muted: #8a96a3;
+    --border: #3a4250;
+    --green: #6ec6a0;
+    --red: #e07a7a;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Heebo', 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    line-height: 1.6;
+  }
+
+  /* ── HEADER ── */
+  header {
+    background: var(--surface);
+    border-bottom: 2px solid var(--accent);
+    padding: 16px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .logo { font-size: 11px; letter-spacing: 2px; color: var(--muted); text-transform: uppercase; }
+  .header-title { font-size: 18px; font-weight: 700; color: var(--text); }
+  .badge { background: var(--accent); color: #1a2028; font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 10px; letter-spacing: 1px; }
+
+  /* ── NAV TABS ── */
+  .tabs {
+    display: flex;
+    gap: 6px;
+    padding: 16px 24px 0;
+    border-bottom: 1px solid var(--border);
+    overflow-x: auto;
+    background: var(--surface);
+    flex-wrap: nowrap;
+  }
+  .tab {
+    padding: 8px 16px;
+    border-radius: 6px 6px 0 0;
+    border: none;
+    background: transparent;
+    color: var(--muted);
+    font-family: 'Heebo', sans-serif;
+    font-size: 13px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.2s;
+    border-bottom: 2px solid transparent;
+  }
+  .tab:hover { color: var(--text); background: var(--card); }
+  .tab.active { color: var(--accent); border-bottom-color: var(--accent); background: var(--card); font-weight: 600; }
+
+  /* ── SEARCH ── */
+  .search-wrap {
+    padding: 20px 24px 12px;
+    background: var(--surface);
+  }
+  .search-input {
+    width: 100%;
+    max-width: 500px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 14px;
+    color: var(--text);
+    font-family: 'Heebo', sans-serif;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s;
+    display: block;
+    margin: 0 auto;
+    text-align: right;
+  }
+  .search-input:focus { border-color: var(--accent); }
+  .search-input::placeholder { color: var(--muted); }
+
+  /* ── MAIN ── */
+  main { padding: 24px; max-width: 960px; margin: 0 auto; }
+
+  /* ── SECTIONS ── */
+  .section { display: none; }
+  .section.visible { display: block; }
+
+  /* ── PAGE TITLE ── */
+  .page-title {
+    font-size: 28px;
+    font-weight: 900;
+    color: var(--accent);
+    margin-bottom: 6px;
+  }
+  .page-sub {
+    font-size: 14px;
+    color: var(--muted);
+    margin-bottom: 24px;
+    font-style: italic;
+  }
+
+  /* ── CARDS GRID ── */
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; margin-bottom: 28px; }
+  .grid-2 { grid-template-columns: repeat(auto-fill, minmax(380px, 1fr)); }
+
+  /* ── CARD ── */
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+  .card:hover { border-color: var(--accent); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(126,184,201,0.1); }
+  .card.expanded { border-color: var(--accent); }
+  .card-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+  .card-icon { font-size: 28px; flex-shrink: 0; }
+  .card-title { font-size: 15px; font-weight: 700; color: var(--text); margin-bottom: 2px; }
+  .card-title-en { font-size: 11px; color: var(--muted); letter-spacing: 0.5px; margin-bottom: 6px; font-family: 'Inter', sans-serif; }
+  .card-preview { font-size: 13px; color: var(--muted); }
+  .toggle-icon { font-size: 18px; color: var(--muted); transition: transform 0.3s; flex-shrink: 0; margin-top: 2px; }
+  .card.expanded .toggle-icon { transform: rotate(180deg); color: var(--accent); }
+  .card-body { display: none; margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--border); }
+  .card.expanded .card-body { display: block; }
+
+  /* ── TAGS ── */
+  .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+  .tag {
+    background: rgba(126,184,201,0.12);
+    color: var(--accent);
+    border: 1px solid rgba(126,184,201,0.3);
+    border-radius: 20px;
+    padding: 3px 10px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+  }
+  .tag.gold { background: rgba(201,168,126,0.12); color: var(--accent2); border-color: rgba(201,168,126,0.3); }
+  .tag.green { background: rgba(110,198,160,0.12); color: var(--green); border-color: rgba(110,198,160,0.3); }
+
+  /* ── INFO ROWS ── */
+  .info-row { display: flex; gap: 8px; margin-bottom: 10px; align-items: flex-start; }
+  .info-dot { width: 6px; height: 6px; background: var(--accent); border-radius: 50%; flex-shrink: 0; margin-top: 7px; }
+  .info-text { font-size: 13px; color: var(--text); }
+  .info-en { font-size: 11px; color: var(--muted); font-family: 'Inter', sans-serif; margin-top: 1px; }
+
+  /* ── HIGHLIGHT BOX ── */
+  .highlight {
+    background: rgba(126,184,201,0.08);
+    border-right: 3px solid var(--accent);
+    border-radius: 0 8px 8px 0;
+    padding: 12px 14px;
+    margin: 12px 0;
+    font-size: 13px;
+  }
+  .highlight.gold { background: rgba(201,168,126,0.08); border-color: var(--accent2); }
+  .highlight.green { background: rgba(110,198,160,0.08); border-color: var(--green); }
+  .highlight.red { background: rgba(224,122,122,0.08); border-color: var(--red); }
+
+  /* ── COMPARE TABLE ── */
+  .compare-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-top: 8px; }
+  .compare-table th { background: rgba(126,184,201,0.15); color: var(--accent); padding: 8px 10px; text-align: right; font-weight: 600; }
+  .compare-table td { padding: 8px 10px; border-bottom: 1px solid var(--border); color: var(--text); vertical-align: top; }
+  .compare-table tr:last-child td { border-bottom: none; }
+  .compare-table tr:hover td { background: rgba(255,255,255,0.03); }
+
+  /* ── SECTION HEADER ── */
+  .section-label {
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: var(--accent);
+    text-transform: uppercase;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .section-heading {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--text);
+    margin-bottom: 16px;
+  }
+
+  /* ── DIVIDER ── */
+  .divider { height: 1px; background: var(--border); margin: 24px 0; }
+
+  /* ── QUIZ ── */
+  .quiz-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 22px;
+    margin-bottom: 16px;
+  }
+  .quiz-question { font-size: 15px; font-weight: 600; color: var(--text); margin-bottom: 14px; }
+  .quiz-options { display: grid; gap: 8px; }
+  .quiz-opt {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-family: 'Heebo', sans-serif;
+    font-size: 13px;
+    color: var(--text);
+    cursor: pointer;
+    text-align: right;
+    transition: all 0.2s;
+  }
+  .quiz-opt:hover:not(.disabled) { border-color: var(--accent); background: rgba(126,184,201,0.08); }
+  .quiz-opt.correct { background: rgba(110,198,160,0.15); border-color: var(--green); color: var(--green); }
+  .quiz-opt.wrong { background: rgba(224,122,122,0.15); border-color: var(--red); color: var(--red); }
+  .quiz-opt.disabled { cursor: default; }
+  .quiz-feedback { margin-top: 10px; font-size: 13px; padding: 8px 12px; border-radius: 6px; display: none; }
+  .quiz-feedback.show { display: block; }
+  .quiz-feedback.ok { background: rgba(110,198,160,0.1); color: var(--green); }
+  .quiz-feedback.err { background: rgba(224,122,122,0.1); color: var(--red); }
+  .quiz-counter { font-size: 12px; color: var(--muted); margin-bottom: 18px; }
+  .reset-btn {
+    background: var(--card);
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    padding: 8px 20px;
+    border-radius: 8px;
+    font-family: 'Heebo', sans-serif;
+    font-size: 13px;
+    cursor: pointer;
+    margin-top: 12px;
+    transition: all 0.2s;
+  }
+  .reset-btn:hover { background: var(--accent); color: #1a2028; }
+
+  /* ── GLOSSARY ── */
+  .glossary-item {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 18px;
+    margin-bottom: 10px;
+    transition: border-color 0.2s;
+  }
+  .glossary-item:hover { border-color: var(--accent); }
+  .glos-he { font-size: 16px; font-weight: 700; color: var(--accent); }
+  .glos-en { font-size: 12px; color: var(--muted); font-family: 'Inter', sans-serif; margin-bottom: 6px; }
+  .glos-def { font-size: 13px; color: var(--text); }
+  .glos-note { font-size: 12px; color: var(--muted); margin-top: 4px; font-style: italic; }
+  .hidden-item { display: none; }
+
+  /* ── PLANE CARDS ── */
+  .plane-wrap { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px,1fr)); gap: 14px; }
+  .plane-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .plane-card:hover { border-color: var(--accent); }
+  .plane-emoji { font-size: 40px; margin-bottom: 10px; }
+  .plane-name { font-size: 15px; font-weight: 700; color: var(--text); }
+  .plane-name-en { font-size: 11px; color: var(--muted); font-family: 'Inter'; margin-bottom: 8px; }
+  .plane-desc { font-size: 12px; color: var(--muted); }
+  .plane-moves { display: flex; flex-wrap: wrap; gap: 5px; justify-content: center; margin-top: 10px; }
+
+  /* ── ENERGY TIMELINE ── */
+  .timeline { display: flex; flex-direction: column; gap: 0; margin-top: 12px; }
+  .timeline-item {
+    display: flex;
+    gap: 14px;
+    position: relative;
+    padding-bottom: 20px;
+  }
+  .timeline-item:last-child { padding-bottom: 0; }
+  .tl-left { display: flex; flex-direction: column; align-items: center; gap: 0; }
+  .tl-dot { width: 14px; height: 14px; border-radius: 50%; border: 2px solid var(--accent); background: var(--bg); flex-shrink: 0; z-index: 1; }
+  .tl-line { width: 2px; flex: 1; background: var(--border); }
+  .timeline-item:last-child .tl-line { display: none; }
+  .tl-content { padding-top: 0; }
+  .tl-time { font-size: 11px; color: var(--accent); font-weight: 700; letter-spacing: 0.5px; margin-bottom: 2px; }
+  .tl-title { font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+  .tl-desc { font-size: 12px; color: var(--muted); }
+
+  /* SCROLLABLE inside card */
+  .scroll-inner { max-height: 340px; overflow-y: auto; padding-left: 4px; }
+  .scroll-inner::-webkit-scrollbar { width: 4px; }
+  .scroll-inner::-webkit-scrollbar-track { background: var(--border); border-radius: 2px; }
+  .scroll-inner::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 2px; }
+
+  /* No results */
+  .no-results { text-align: center; color: var(--muted); padding: 40px; font-size: 14px; }
+
+  @media (max-width: 600px) {
+    main { padding: 12px; }
+    .grid { grid-template-columns: 1fr; }
+    header { padding: 12px 14px; }
+    .header-title { font-size: 15px; }
+    .tabs { padding: 10px 12px 0; }
+    .tab { font-size: 12px; padding: 6px 10px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <div class="logo">Fit House Academy</div>
+    <div class="header-title">אנטומיה — מפגש 01</div>
+  </div>
+  <div class="badge">MEETING 01</div>
+</header>
+
+<!-- TABS -->
+<div class="tabs">
+  <button class="tab active" onclick="switchTab('concepts')">📚 מושגי יסוד</button>
+  <button class="tab" onclick="switchTab('skeleton')">🦴 שלד ומפרקים</button>
+  <button class="tab" onclick="switchTab('muscle')">💪 שרירים</button>
+  <button class="tab" onclick="switchTab('planes')">🔄 מישורי תנועה</button>
+  <button class="tab" onclick="switchTab('physio')">⚡ פיזיולוגיה</button>
+  <button class="tab" onclick="switchTab('glossary')">🔤 מילון מונחים</button>
+  <button class="tab" onclick="switchTab('quiz')">🎯 חידון</button>
+</div>
+
+<!-- SEARCH -->
+<div class="search-wrap">
+  <input class="search-input" type="text" id="searchBox" placeholder="🔍  חפש מונח, נושא או הסבר..." oninput="doSearch(this.value)" />
+</div>
+
+<main>
+
+<!-- ══════════════════════════════════════════
+     TAB 1 — CONCEPTS
+══════════════════════════════════════════ -->
+<div class="section visible" id="sec-concepts">
+  <div class="page-title">מושגים בסיסיים</div>
+  <div class="page-sub">Basic Concepts — הבניינים של גוף האדם מהקטן לגדול</div>
+
+  <div class="grid">
+
+    <!-- תא -->
+    <div class="card" onclick="toggleCard(this)">
+      <div class="card-header">
+        <div class="card-icon">🔬</div>
+        <div style="flex:1">
+          <div class="card-title">תא</div>
+          <div class="card-title-en">Cell</div>
+          <div class="card-preview">יחידת החיים הבסיסית</div>
+        </div>
+        <div class="toggle-icon">▼</div>
+      </div>
+      <div class="card-body">
+        <div class="highlight">יחידת החיים הבסיסית הקטנה ביותר — שמתקיימים בה <strong>כל</strong> מאפייני החיים.</div>
+        <div class="info-row"><div class="info-dot"></div><div class="info-text">נשימה, רבייה, חילוף חומרים והזנה</div></div>
+        <div class="info-row"><div class="info-dot"></div><div class="info-text">כל יצורי החיים בנויים מתא אחד או יותר</div></div>
+        <div class="info-row"><div class="info-dot"></div><div class="info-text">תאים נבדלים בצורתם <strong>ובתפקידיהם</strong></div></div>
+      </div>
+    </div>
+
+    <!-- רקמה -->
+    <div class="card" onclick="toggleCard(this)">
+      <div class="card-header">
+        <div class="card-icon">🧬</div>
+        <div style="flex:1">
+          <div class="card-title">רקמה</div>
+          <div class="card-title-en">Tissue</div>
+          <div class="card-preview">4 סוגים עיקריים</div>
+        </div>
+        <div class="toggle-icon">▼</div>
+      </div>
+      <div class="card-body">
+        <div class="highlight">צבר תאים וחומרים בין-תאיים בעלי <strong>מוצא, תפקוד ומבנה משותפים</strong>.</div>
+        <table class="compare-table">
+          <tr><th>סוג</th><th>Type</th><th>תפקיד עיקרי</th></tr>
+          <tr><td>עצב</td><td>Nerve</td><td>הולכת אותות חשמליים</td></tr>
+          <tr><td>שריר</td><td>Muscle</td><td>התכווצות ותנועה</td></tr>
+          <tr><td>חיבור</td><td>Connective</td><td>תמיכה, הגנה, חיבור (קולגן)</td></tr>
+          <tr><td>אפיתל</td><td>Epithelial</td><td>הגנה, ספיגה, שמירת הומיאוסטזיס</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <!-- איבר -->
+    <div class="card" onclick="toggleCard(this)">
+      <div class="card-header">
+        <div class="card-icon">❤️</div>
+        <div style="flex:1">
+          <div class="card-title">איבר</div>
+          <div class="card-title-en">Organ</div>
+          <div class="card-preview">קבוצת רקמות בעלות תפקיד משותף</div>
+        </div>
+        <div class="toggle-icon">▼</div>
+      </div>
+      <div class="card-body">
+        <div class="highlight">קבוצת רקמות הפועלות <strong>בסנכרון</strong> למבנה עם תפקיד מסוים.</div>
+        <div class="info-row"><div class="info-dot"></div><div class="info-text">איבר יכול להשתייך למספר מערכות — לדוג׳ הפה הוא גם מערכת עיכול וגם מערכת נשימה</div></div>
+        <div class="tags"><span class="tag">לב</span><span class="tag">ריאות</span><span class="tag">כבד</span><span class="tag">מוח</span><span class="tag">כליות</span></div>
+      </div>
+    </div>
+
+    <!-- מערכת -->
+    <div class="card" onclick="toggleCard(this)">
+      <div class="card-header">
+        <div class="card-icon">⚙️</div>
+        <div style="flex:1">
+          <div class="card-title">מערכת</div>
+          <div class="card-title-en">System</div>
+          <div class="card-preview">איברים בתפקיד משותף</div>
+        </div>
+        <div class="toggle-icon">▼</div>
+      </div>
+      <div class="card-body">
+        <div class="highlight">מערכות הגוף עובדות ב<strong>שיתוף פעולה</strong> ויש ביניהן תלות הדדית.</div>
+        <div class="tags">
+          <span class="tag">שלד</span><span class="tag">שריר</span><span class="tag">עצבים</span>
+          <span class="tag">נשימה</span><span class="tag">עיכול</span><span class="tag">דם</span>
+          <span class="tag">לימפה</span><span class="tag">אנדוקרינית</span><span class="tag">חיסון</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- אנטומיה -->
+    <div class="card" onclick="toggleCard(this)">
+      <div class="card-header">
+        <div class="card-icon">📖</div>
+        <div style="flex:1">
+          <div class="card-title">אנטומיה</div>
+          <div class="card-title-en">Anatomy</div>
+          <div class="card-preview">מה זה ולמה חשוב?</div>
+        </div>
+        <div class="toggle-icon">▼</div>
+      </div>
+      <div class="card-body">
+        <div class="highlight">מדע העוסק במבנה גוף האדם ויחסי הגומלין בין מבנה לתפקוד.</div>
+        <div class="info-row"><div class="info-dot"></div><div class="info-text">מקור המילה — יוונית (Anatomia = לחתוך)</div></div>
+        <div class="info-row"><div class="info-dot"></div><div class="info-text">בעבר נלמד בעיקר בדיסקציות (ניתוחי גופות)</div></div>
+        <div class="info-row"><div class="info-dot"></div><div class="info-text">בקיאות באנטומיה = הדרכה מתוך הבנה אמיתית</div></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- היררכיה ויזואלית -->
+  <div class="section-label">ארגון הגוף</div>
+  <div class="section-heading">היררכיה ביולוגית</div>
+  <div style="display:flex; gap:0; align-items:center; flex-wrap:wrap; margin-bottom:28px; padding:18px; background:var(--card); border-radius:12px; border:1px solid var(--border);">
+    <div style="text-align:center; padding:10px 14px;">
+      <div style="font-size:28px">🔬</div>
+      <div style="font-size:12px; font-weight:700; color:var(--accent)">תא</div>
+      <div style="font-size:10px; color:var(--muted)">Cell</div>
+    </div>
+    <div style="color:var(--muted); font-size:20px; padding:0 4px;">→</div>
+    <div style="text-align:center; padding:10px 14px;">
+      <div style="font-size:28px">🧬</div>
+      <div style="font-size:12px; font-weight:700; color:var(--accent)">רקמה</div>
+      <div style="font-size:10px; color:var(--muted)">Tissue</div>
+    </div>
+    <div style="color:var(--muted); font-size:20px; padding:0 4px;">→</div>
+    <div style="text-align:center; padding:10px 14px;">
+      <div style="font-size:28px">❤️</div>
+      <div style="font-size:12px; font-weight:700; color:var(--accent)">איבר</div>
+      <div style="font-size:10px; color:var(--muted)">Organ</div>
+    </div>
+    <div style="color:var(--muted); font-size:20px; padding:0 4px;">→</div>
+    <div style="text-align:center; padding:10px 14px;">
+      <div style="font-size:28px">⚙️</div>
+      <div style="font-size:12px; font-weight:700; color:var(--accent)">מערכת</div>
+      <div style="font-size:10px; color:var(--muted)">System</div>
+    </div>
+    <div style="color:var(--muted); font-size:20px; padding:0 4px;">→</div>
+    <div style="text-align:center; padding:10px 14px;">
+      <div style="font-size:28px">🧍</div>
+      <div style="font-size:12px; font-weight:700; color:var(--accent)">אורגניזם</div>
+      <div style="font-size:10px; color:var(--muted)">Organism</div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════
+     TAB 2 — SKELETON
+══════════════════════════════════════════ -->
+<div class="section" id="sec-skeleton">
+  <div class="page-title">שלד ומפרקים</div>
+  <div class="page-sub">Skeleton & Joints — מבנה, תפקוד ופגיעות</div>
+
+  <div class="grid grid-2">
+
+    <!-- עצם -->
+    <div class="card" onclick="toggleCard(this)">
+      <div class="card-header">
+        <div class="card-icon">🦴</div>
+        <div style="flex:1">
+          <div class="card-title">עצם</div>
+          <div class="card-title-en">Bone</div>
+          <div class="card-preview">206 עצמות בגוף בוגר • רקמה חיה</div>
+        </div>
+        <div class="toggle-icon">▼</div>
+      </div>
+      <div class="card-body">
+        <div class="highlight">רקמת חיבור קשה וצפופה — <strong>רקמה חיה</strong> שנהרסת ונבנית לאורך כל החיים.</div>
+        <div class="section-label" style="margin-top:12px">5 תפקידים</div>
+        <div class="info-row"><div class="info-dot"></div><div class="info-text"><strong>תמיכה</strong> — נקודות אחיזה לשרירים, התמודדות עם כבידה</div></div>
+        <div class="info-row"><div class="info-dot"></div><div class="info-text"><strong>תנועה</strong> — פנים ספוגי ✕ קל, מרכיבות את המפרקים</div></div>
+        <div class="info-row"><div class="info-dot"></div><div class="info-text"><strong>הגנה</strong> — על איברים חיוניים</div></div>
+        <div class="info-row"><div class="info-dot"></div><div class="info-text"><strong>אגירת מינרלים</strong> — שמירה על מאזן יונים</div></div>
+        <div class="info-row"><div class="info-dot"></div><div class="info-text"><strong>ייצור תאי דם</strong> — במח העצם (bone marrow)</div></div>
+        <div class="divider"></div>
+        <div class="section-label">3 סוגי תאי עצם</div>
+        <table class="compare-table">
+          <tr><th>תא</th><th>English</th><th>תפקיד</th></tr>
+          <tr><td>אוסטיאובלסטים</td><td>Osteoblasts</td><td>בונים עצם (מוגבר בינקות)</td></tr>
+          <tr><td>אוסטיאוקלסטים</td><td>Osteoclasts</td><td>מפרקים עצם (מוגבר בזקנה)</td></tr>
+          <tr><td>אוסטיאוציטים</td><td>Osteocytes</td><td>תאים בוגרים, מתחזקים</td></tr>
+        </table>
+        <div class="highlight gold" style="margin-top:12px"><strong>חוק וולף:</strong> עצם מתפתחת בהתאם לעומס שמופעל עליה — כל עוד העומס אינו רציף ובגבולות הפיזיולוגיים.</div>
+      </div>
+    </div>
+
+    <!-- סוגי עצמות -->
+    <div class="card" onclick="toggleCard(this)">
+      <div class="card-header">
+        <div class="card-icon">📏</div>
+        <div style="flex:1">
+          <div class="card-title">סוגי עצמות</div>
+          <div class="card-title-en">Types of Bones</div>
+          <div class="card-preview">5 צורות שונות</div>
+        </div>
+        <div class="toggle-icon">▼</div>
+      </div>
+      <div class="card-body">
+        <table class="compare-table">
+          <tr><th>סוג</th><th>Type</th><th>תיאור</th></tr>
+          <tr><td>ארוכה</td><td>Long</td><td>בונה גפיים | דיאפיזה + אפיפיזה</td></tr>
+          <tr><td>שטוחה</td><td>Flat</td><td>מגינה על איברים חיוניים</td></tr>
+          <tr><td>קצרה</td><td>Short</td><td>מרובעת/מלבנית — יציבות</td></tr>
+          <tr><td>אי-רגולרית</td><td>Irregular</td><td>ללא מראה אחיד (חוליות)</td></tr>
+          <tr><td>ססמואידית</td><td>Sesamoid</td><td>משולבת בגיד — שיפור ביומכניקה</td></tr>
+        </table>
+        <div class="highlight" style="margin-top:12px">עצם ארוכה מחולקת: <strong>דיאפיזה</strong> (גוף, מח עצם) + <strong>אפיפיזה</strong> (קצות, לוחיות גדילה)</div>
+      </div>
+    </div>
+
+    <!-- אוסטיאופורוזיס -->
+    <div class="card" onclick="toggleCard(this)">
+      <div class="card-header">
+        <div class="card-icon">⚠️</div>
+        <div style="flex:1">
+          <div class="card-title">אוסטיאופורוזיס</div>
+          <div class="card-title-en">Osteoporosis — Bone Loss</div>
+          <div class="card-preview">המחלה השקטה</div>
+        </div>
+        <div class="toggle-icon">▼</div>
+      </div>
+      <div class="card-body">
+        <div class="highlight red">ירידה במסת וצפיפות העצם — מאובחנת בבדיקת <strong>DEXA</strong></div>
+        <div class="info-row"><div class="info-dot"></div><div class="info-text">נפוץ בנשים מעל 50 לאחר גיל המעבר</div></div>
+        <div class="info-row"><div class="info-dot"></div><div class="info-text">גורמי סיכון: ישיבה, עישון, גנטיקה, אנורקסיה</div></div>
+        <div class="info-row"><div class="info-dot"></div><div class="info-text">סיכון שברים ספונטניים — שכ"י, ירך, צלעות, עמוד שדרה</div></div>
+        <div class="highlight gold"><strong>אוסטיאופניה</strong> = מצב מקדים — לא מוגדרת עדיין כמחלה</div>
+      </div>
+    </div>
+
+    <!-- מפרק -->
+    <div class="card" onclick="toggleCard(this)">
+      <div class="card-header">
+        <div class="card-icon">🔗</div>
+        <div style="flex:1">
+          <div class="card-title">מפרק</div>
+          <div class="card-title-en">Joint</div>
+          <div class="card-preview">3 סוגים עיקריים</div>
+        </div>
+        <div class="toggle-icon">▼</div>
+      </div>
+      <div class="card-body">
+        <div class="highlight">נקודת מפגש בין שתי עצמות או יותר.</div>
+        <table class="compare-table">
+          <tr><th>סוג</th><th>Type</th><th>דוגמה</th></tr>
+          <tr><td>פיברוטי</td><td>Fibrous</td><td>תפרי גולגולת</td></tr>
+          <tr><td>סחוסי</td><td>Cartilaginous</td><td>Symphysis Pubis</td></tr>
+          <tr><td>סינוביאלי</td><td>Synovial</td><td>GHJ (כתף)</td></tr>
+        </table>
+        <div class="divider"></div>
+        <div class="section-label">מפרק סינוביאלי — מאפיינים</div>
+        <div class="info-row"><div class="info-dot"></div><div class="info-text"><strong>קפסולה מפרקית</strong> — מייצרת נוזל סינוביאלי, תוחמת חלל</div></div>
+        <div class="info-row"><div class="info-dot"></div><div class="info-text"><strong>נוזל סינוביאלי</strong> — מזין ומשמן את המפרק</div></div>
+        <div class="info-row"><div class="info-dot"></div><div class="info-text"><strong>רצועות תוך-מפרקיות</strong></div></div>
+        <div class="divider"></div>
+        <div class="section-label">3 סוגי מפרק סינוביאלי</div>
+        <table class="compare-table">
+          <tr><th>סוג</th><th>English</th><th>תנועה</th><th>דוגמה</th></tr>
+          <tr><td>כדור-שקע</td><td>Ball & Socket</td><td>כל המישורים</td><td>כתף, ירך</td></tr>
+          <tr><td>ציר</td><td>Hinge</td><td>מישור אחד</td><td>מרפק, ברך</td></tr>
+          <tr><td>סיבוב</td><td>Pivot</td><td>סיבוב</td><td>Radio-Ulnar</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <!-- רצועה -->
+    <div class="card" onclick="toggleCard(this)">
+      <div class="card-header">
+        <div class="card-icon">🔧</div>
+        <div style="flex:1">
+          <div class="card-title">רצועה</div>
+          <div class="card-title-en">Ligament</div>
+          <div class="card-preview">עצם → עצם</div>
+        </div>
+        <div class="toggle-icon">▼</div>
+      </div>
+      <div class="card-body">
+        <div class="highlight">רקמת חיבור מסיבי קולגן + מעט אלסטין. מחברת <strong>עצם לעצם</strong>.</div>
+        <div class="info-row"><div class="info-dot"></div><div class="info-text">תפקיד: <strong>הגבלת תנועה</strong> לטובת יציבות המפרק</div></div>
+        <div class="info-row"><div class="info-dot"></div><div class="info-text">פגיעה = חוסר יציבות, הגבלת טווח, כאב</div></div>
+        <div class="highlight gold">נקע (Sprain) = פגיעה ברצועה!</div>
+      </div>
+    </div>
+
+    <!-- סחוס -->
+    <div class="card" onclick="toggleCard(this)">
+      <div class="card-header">
+        <div class="card-icon">🧊</div>
+        <div style="flex:1">
+          <div class="card-title">סחוס</div>
+          <div class="card-title-en">Cartilage</div>
+          <div class="card-preview">ריפוי מוגבל — ללא כלי דם</div>
+        </div>
+        <div class="toggle-icon">▼</div>
+      </div>
+      <div class="card-body">
+        <div class="highlight red">ללא אספקת דם ועצבוב → יכולת ריפוי מוגבלת!</div>
+        <table class="compare-table">
+          <tr><th>סוג</th><th>מאפיין</th></tr>
+          <tr><td>היאליני</td><td>הנפוץ ביותר — ציפוי משטחי מפרק</td></tr>
+          <tr><td>אלסטי</td><td>גמיש — אפרכסת, גרון</td></tr>
+          <tr><td>פיברוטי</td><td>חזק — דיסקים בין-חולייתיים, מניסקוס</td></tr>
+        </table>
+        <div class="info-row" style="margin-top:10px"><div class="info-dot"></div><div class="info-text">מניעת שחיקת עצמות</div></div>
+        <div class="info-row"><div class="info-dot"></div><div class="info-text">בלימת זעזועים ופיזור עומסים</div></div>
+      </div>
+    </div>
+
+    <!-- גיד -->
+    <div class="card" onclick="toggleCard(this)">
+      <div class="card-header">
+        <div class="card-icon">🪢</div>
+        <div style="flex:1">
+          <div class="card-title">גיד</div>
+          <div class="card-title-en">Tendon</div>
+          <div class="card-preview">שריר → עצם</div>
+        </div>
+        <div class="toggle-icon">▼</div>
+      </div>
+      <div class="card-body">
+        <div class="highlight">אגד קשיח של רקמת חיבור סיבית. מחבר <strong>שריר לעצם</strong>.</div>
+        <div class="info-row"><div class="info-dot"></div><div class="info-text">מעביר כוח מהשריר לעצם → יוצר תנועה</div></div>
+        <div class="info-row"><div class="info-dot"></div><div class="info-text">אספקת דם מועטה → ריפוי מוגבל</div></div>
+        <div class="info-row"><div class="info-dot"></div><div class="info-text">פגיעות: טראומה אקוטית / שינויים כרוניים (Tendinopathy)</div></div>
+      </div>
+    </div>
+
+    <!-- יציבות מפרקית -->
+    <div class="card" onclick="toggleCard(this)">
+      <div class="card-header">
+        <div class="card-icon">⚖️</div>
+        <div style="flex:1">
+          <div class="card-title">יציבות מפרקית</div>
+          <div class="card-title-en">Joint Stability vs. Mobility</div>
+          <div class="card-preview">המשחק הנצחי</div>
+        </div>
+        <div class="toggle-icon">▼</div>
+      </div>
+      <div class="card-body">
+        <div class="highlight gold"><strong>Stability ↔ Mobility</strong> — בגוף קיים משחק תמידי בין יציבות לתנועתיות.</div>
+        <div class="section-label" style="margin-top:10px">גורמים קובעים</div>
+        <div class="info-row"><div class="info-dot"></div><div class="info-text"><strong>מייצבים סטטיים:</strong> מבנה עצמות, רצועות, קפסולה, לברום</div></div>
+        <div class="info-row"><div class="info-dot"></div><div class="info-text"><strong>מייצבים דינמיים:</strong> שרירים</div></div>
+        <div class="info-row"><div class="info-dot"></div><div class="info-text"><strong>לברום</strong> — סחוס פיברוטי טבעתי במפרקי Ball & Socket. מעמיק את השקע.</div></div>
+        <div class="info-row"><div class="info-dot"></div><div class="info-text"><strong>בורסה</strong> — שקיק נוזל סיכה. מקטין חיכוך.</div></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════
+     TAB 3 — MUSCLE
+══════════════════════════════════════════ -->
+<div class="section" id="sec-muscle">
+  <div class="page-title">שרירים</div>
+  <div class="page-sub">Muscles — מבנה, סוגים, כיווץ ותפקוד</div>
+
+  <div class="grid grid-2">
+
+    <!-- שריר בסיסי -->
+    <div class="card" onclick="toggleCard(this)">
+      <div class="card-header">
+        <div class="card-icon">💪</div>
+        <div style="flex:1">
+          <div class="card-title">שריר — כללי</div>
+          <div class="card-title-en">Muscle — Overview</div>
+          <div class="card-preview">3 סוגים: משורטט, חלק, לב</div>
+        </div>
+        <div class="toggle-icon">▼</div>
+      </div>
+      <div class="card-body">
+        <div class="highlight">רקמה ממספר רב של תאים (סיבי שריר) המסודרים במקביל.</div>
+        <table class="compare-table">
+          <tr><th>סוג</th><th>Type</th><th>שליטה</th><th>דוגמה</th></tr>
+          <tr><td>משורטט</td><td>Skeletal/Striated</td><td>רצונית</td><td>ביצפס, קוואדריצפס</td></tr>
+          <tr><td>חלק</td><td>Smooth/Visceral</td><td>אוטונומית</td><td>כלי דם, מעי</td></tr>
+          <tr><td>לב</td><td>Cardiac</td><td>אוטונומית (מבנה משורטט)</td><td>הלב</td></tr>
+        </table>
+        <div class="info-row" style="margin-top:10px"><div class="info-dot"></div><div class="info-text">שריר חלק דורש <strong>פחות ATP</strong> לכיווץ והחזקתו</div></div>
+        <div class="info-row"><div class="info-dot"></div><div class="info-text">שריר חלק בונה דפנות כלי דם, מעי (פריסטלטיקה), דרכי נשימה</div></div>
+      </div>
+    </div>
+
+    <!-- שריר שלד -->
+    <div class="card" onclick="toggleCard(this)">
+      <div class="card-header">
+        <div class="card-icon">🔩</div>
+        <div style="flex:1">
+          <div class="card-title">שריר שלד — מבנה</div>
+          <div class="card-title-en">Skeletal Muscle Structure</div>
+          <div class="card-preview">אקטין + מיוזין</div>
+        </div>
+        <div class="toggle-icon">▼</div>
+      </div>
+      <div class="card-body">
+        <div class="highlight">שני אלמנטים: <strong>אקטיבי</strong> (סיבי שריר) + <strong>פאסיבי</strong> (רקמת חיבור)</div>
+        <div class="info-row"><div class="info-dot"></div><div class="info-text"><strong>אקטין</strong> = סיב דק (Thin filament)</div></div>
+        <div class="info-row"><div class="info-dot"></div><div class="info-text"><strong>מיוזין</strong> = סיב עבה (Thick filament)</div></div>
+        <div class="highlight gold">בכיווץ מלא — חפיפה <strong>מרבית</strong> בין אקטין למיוזין (Sliding filament theory)</div>
+      </div>
+    </div>
+
+    <!-- סיבי שריר -->
+    <div class="card" onclick="toggleCard(this)">
+      <div class="card-header">
+        <div class="card-icon">🔴</div>
+        <div style="flex:1">
+          <div class="card-title">סיבי שריר</div>
+          <div class="card-title-en">Muscle Fiber Types</div>
+          <div class="card-preview">Type 1 vs Type 2</div>
+        </div>
+        <div class="toggle-icon">▼</div>
+      </div>
+      <div class="card-body">
+        <table class="compare-table">
+          <tr><th></th><th>Type 1 — אדום 🔴</th><th>Type 2 — לבן ⚪</th></tr>
+          <tr><td>מאפיין</td><td>יציבתי</td><td>מניע</td></tr>
+          <tr><td>אספקת דם</td><td>עשירה</td><td>דלה</td></tr>
+          <tr><td>מהירות</td><td>איטית</td><td>מהירה</td></tr>
+          <tr><td>סיבולת</td><td>גבוהה</td><td>נמוכה — מתעייף מהר</td></tr>
+          <tr><td>שימוש</td><td>אימון אירובי ממושך</td><td>ספרינט, כוח</td></tr>
+        </table>
+        <div class="highlight">כל שריר = שילוב של שני הסוגים, בהתאם לדרישותיו התפקודיות.</div>
+      </div>
+    </div>
+
+    <!-- סוגי כיווץ -->
+    <div class="card" onclick="toggleCard(this)">
+      <div class="card-header">
+        <div class="card-icon">↔️</div>
+        <div style="flex:1">
+          <div class="card-title">סוגי כיווץ</div>
+          <div class="card-title-en">Contraction Types</div>
+          <div class="card-preview">קונצנטרי / אקסצנטרי / איזומטרי</div>
+        </div>
+        <div class="toggle-icon">▼</div>
+      </div>
+      <div class="card-body">
+        <table class="compare-table">
+          <tr><th>סוג</th><th>English</th><th>מה קורה</th><th>דוגמה</th></tr>
+          <tr><td>קונצנטרי</td><td>Concentric</td><td>שריר מתקצר</td><td>עלייה ב-curl</td></tr>
+          <tr><td>אקסצנטרי</td><td>Eccentric</td><td>שריר מתארך</td><td>ירידה ב-curl</td></tr>
+          <tr><td>איזומטרי</td><td>Isometric</td><td>אורך ללא שינוי</td><td>פלאנק</td></tr>
+        </table>
+        <div class="highlight">יש להתייחס לכוח הכובד ולהשפעתו על סוג הכיווץ!</div>
+      </div>
+    </div>
+
+    <!-- פעולות שרירים -->
+    <div class="card" onclick="toggleCard(this)">
+      <div class="card-header">
+        <div class="card-icon">♟️</div>
+        <div style="flex:1">
+          <div class="card-title">תפקידי שרירים</div>
+          <div class="card-title-en">Muscle Roles</div>
+          <div class="card-preview">אגוניסט, אנטגוניסט, סינרגיסט</div>
+        </div>
+        <div class="toggle-icon">▼</div>
+      </div>
+      <div class="card-body">
+        <table class="compare-table">
+          <tr><th>תפקיד</th><th>Role</th><th>הסבר</th></tr>
+          <tr><td>אגוניסט</td><td>Agonist</td><td>יוצרים תנועה בכיוון מסוים</td></tr>
+          <tr><td>Prime Mover</td><td>Prime Mover</td><td>השריר העיקרי בתנועה</td></tr>
+          <tr><td>סינרגיסט</td><td>Synergist</td><td>מסייע לprime mover</td></tr>
+          <tr><td>אנטגוניסט</td><td>Antagonist</td><td>מבצע תנועה הפוכה</td></tr>
+          <tr><td>מייצב</td><td>Stabilizer</td><td>כיווץ איזומטרי — שמירת מנח</td></tr>
+        </table>
+        <div class="highlight gold">סנכרון בין אגוניסטים לאנטגוניסטים = תנועה מיטבית!</div>
+      </div>
+    </div>
+
+    <!-- היפרטרופיה -->
+    <div class="card" onclick="toggleCard(this)">
+      <div class="card-header">
+        <div class="card-icon">📈</div>
+        <div style="flex:1">
+          <div class="card-title">היפרטרופיה</div>
+          <div class="card-title-en">Hypertrophy</div>
+          <div class="card-preview">כיצד שריר גדל?</div>
+        </div>
+        <div class="toggle-icon">▼</div>
+      </div>
+      <div class="card-body">
+        <div class="highlight green">עלייה בחתך הרוחב של סיב השריר — קצב ייצור חלבונים גדול מקצב הפירוק.</div>
+        <div class="info-row"><div class="info-dot"></div><div class="info-text"><strong>היפרטרופיה</strong> — הגדלת תאים קיימים (נפוץ)</div></div>
+        <div class="info-row"><div class="info-dot"></div><div class="info-text"><strong>היפרפלזיה</strong> — עלייה במספר תאים (נדיר)</div></div>
+        <div class="info-row"><div class="info-dot"></div><div class="info-text">3 מנגנונים: <strong>עומס מכני, נזק שרירי, סטרס מטבולי</strong></div></div>
+        <div class="highlight gold"><strong>כשל</strong> = חוסר יכולת להתמודד עם משקל בכיווץ קונצנטרי לטווח מלא, למרות ניסיון.</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════
+     TAB 4 — PLANES
+══════════════════════════════════════════ -->
+<div class="section" id="sec-planes">
+  <div class="page-title">מישורי תנועה ומושגי ייחוס</div>
+  <div class="page-sub">Planes of Motion & Anatomical Reference Terms</div>
+
+  <div class="section-label">מנח אנטומי — Anatomical Position</div>
+  <div class="highlight" style="margin-bottom:20px; font-size:14px">
+    עמידה זקופה, רגליים צמודות ובהונות קדימה, ידיים פשוטות לצדי הגוף, <strong>אגודלים החוצה</strong>, כפות ידיים קדימה. כל תנועה מנותחת ביחס למנח זה.
+  </div>
+
+  <div class="plane-wrap" style="margin-bottom:28px">
+    <div class="plane-card" onclick="toggleCard(this)">
+      <div class="plane-emoji">◀▶</div>
+      <div class="plane-name">מישור סגיטלי</div>
+      <div class="plane-name-en">Sagittal Plane</div>
+      <div class="plane-desc">מחלק לימין ושמאל<br>תנועות <strong>קדימה-אחורה</strong></div>
+      <div class="plane-moves">
+        <span class="tag">Flexion כיפוף</span>
+        <span class="tag">Extension פשיטה</span>
+      </div>
+      <div class="card-body" style="text-align:right">
+        <div class="info-row"><div class="info-dot"></div><div class="info-text">נקרא גם המישור <strong>החיצי (Lateral)</strong></div></div>
+        <div class="info-row"><div class="info-dot"></div><div class="info-text">דוגמאות: squats, curl ביצפס, הרמת ברך</div></div>
+      </div>
+    </div>
+
+    <div class="plane-card" onclick="toggleCard(this)">
+      <div class="plane-emoji">⬆⬇</div>
+      <div class="plane-name">מישור קורונלי</div>
+      <div class="plane-name-en">Coronal / Frontal Plane</div>
+      <div class="plane-desc">מחלק לחזית ואחור<br>תנועות <strong>לצדדים</strong></div>
+      <div class="plane-moves">
+        <span class="tag">Abduction הרחקה</span>
+        <span class="tag">Adduction קירוב</span>
+        <span class="tag">Side Flexion</span>
+      </div>
+      <div class="card-body" style="text-align:right">
+        <div class="info-row"><div class="info-dot"></div><div class="info-text">נקרא גם המישור <strong>הפרונטלי</strong></div></div>
+        <div class="info-row"><div class="info-dot"></div><div class="info-text">דוגמאות: lateral raise, side lunge</div></div>
+      </div>
+    </div>
+
+    <div class="plane-card" onclick="toggleCard(this)">
+      <div class="plane-emoji">🔄</div>
+      <div class="plane-name">מישור הוריזונטלי</div>
+      <div class="plane-name-en">Transverse / Horizontal Plane</div>
+      <div class="plane-desc">מחלק לעליון ותחתון<br>תנועות <strong>סיבוביות</strong></div>
+      <div class="plane-moves">
+        <span class="tag">Internal Rotation</span>
+        <span class="tag">External Rotation</span>
+        <span class="tag">Pronation</span>
+        <span class="tag">Supination</span>
+      </div>
+      <div class="card-body" style="text-align:right">
+        <div class="info-row"><div class="info-dot"></div><div class="info-text">סיבוב סביב הציר האורכי</div></div>
+        <div class="info-row"><div class="info-dot"></div><div class="info-text">קירוב/הרחקה אופקית — רק בכתף</div></div>
+        <div class="info-row"><div class="info-dot"></div><div class="info-text"><strong>Circumduction</strong> = מעבר בין כל המישורים</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- מושגי ייחוס -->
+  <div class="section-label">מושגי ייחוס</div>
+  <div class="section-heading">Reference Terms</div>
+  <div class="grid">
+    <div class="card" onclick="toggleCard(this)">
+      <div class="card-header">
+        <div style="flex:1">
+          <div class="card-title">קדמי / אחורי</div>
+          <div class="card-title-en">Anterior / Posterior</div>
+        </div><div class="toggle-icon">▼</div>
+      </div>
+      <div class="card-body">
+        <div class="info-row"><div class="info-dot"></div><div class="info-text"><strong>Anterior</strong> = קדמי, קרוב לחזית</div></div>
+        <div class="info-row"><div class="info-dot"></div><div class="info-text"><strong>Posterior</strong> = אחורי, קרוב לחלק האחורי</div></div>
+      </div>
+    </div>
+    <div class="card" onclick="toggleCard(this)">
+      <div class="card-header">
+        <div style="flex:1">
+          <div class="card-title">עליון / תחתון</div>
+          <div class="card-title-en">Superior / Inferior</div>
+        </div><div class="toggle-icon">▼</div>
+      </div>
+      <div class="card-body">
+        <div class="info-row"><div class="info-dot"></div><div class="info-text"><strong>Superior</strong> = עליון, קרוב לקו עליון</div></div>
+        <div class="info-row"><div class="info-dot"></div><div class="info-text"><strong>Inferior</strong> = תחתון</div></div>
+      </div>
+    </div>
+    <div class="card" onclick="toggleCard(this)">
+      <div class="card-header">
+        <div style="flex:1">
+          <div class="card-title">מדיאלי / לטרלי</div>
+          <div class="card-title-en">Medial / Lateral</div>
+        </div><div class="toggle-icon">▼</div>
+      </div>
+      <div class="card-body">
+        <div class="info-row"><div class="info-dot"></div><div class="info-text"><strong>Medial</strong> = קרוב לקו האמצע</div></div>
+        <div class="info-row"><div class="info-dot"></div><div class="info-text"><strong>Lateral</strong> = רחוק מקו האמצע</div></div>
+      </div>
+    </div>
+    <div class="card" onclick="toggleCard(this)">
+      <div class="card-header">
+        <div style="flex:1">
+          <div class="card-title">פרוקסימלי / דיסטלי</div>
+          <div class="card-title-en">Proximal / Distal</div>
+        </div><div class="toggle-icon">▼</div>
+      </div>
+      <div class="card-body">
+        <div class="info-row"><div class="info-dot"></div><div class="info-text"><strong>Proximal</strong> = מקורב לחיבור הגפה — קרוב לשלד הצירי</div></div>
+        <div class="info-row"><div class="info-dot"></div><div class="info-text"><strong>Distal</strong> = מרוחק מחיבור הגפה — רחוק מהשלד הצירי</div></div>
+        <div class="highlight">לדוג׳: הברך <strong>פרוקסימלית</strong> לקרסול; הקרסול <strong>דיסטלי</strong> לברך</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════
+     TAB 5 — PHYSIO
+══════════════════════════════════════════ -->
+<div class="section" id="sec-physio">
+  <div class="page-title">פיזיולוגיה של המאמץ</div>
+  <div class="page-sub">Exercise Physiology — מה קורה בגוף בזמן אימון?</div>
+
+  <!-- אנרגיה בציר זמן -->
+  <div class="section-label">מסלולי אנרגיה — Energy Systems</div>
+  <div class="section-heading">הציר הזמני של הפקת אנרגיה</div>
+
+  <div style="background:var(--card); border-radius:12px; padding:20px; border:1px solid var(--border); margin-bottom:24px;">
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="tl-left"><div class="tl-dot" style="background:var(--accent); border-color:var(--accent)"></div><div class="tl-line"></div></div>
+        <div class="tl-content">
+          <div class="tl-time">0 — 10 שניות</div>
+          <div class="tl-title">⚡ אנאירובי א-לקטי (ATP-CP)</div>
+          <div class="tl-desc">מאגרי ATP זמינים (2-3 ש׳) + Phosphocreatine (6-10 ש׳ נוספות). מהירות מיידית. ספרינט, הרמת משקולות מרבי.</div>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="tl-left"><div class="tl-dot" style="background:var(--accent2); border-color:var(--accent2)"></div><div class="tl-line"></div></div>
+        <div class="tl-content">
+          <div class="tl-time">10 שניות — 2-3 דקות</div>
+          <div class="tl-title">🥛 אנאירובי לקטי (Glycolysis)</div>
+          <div class="tl-desc">פירוק גלוקוז → פירובט → לקטט. דלק: פחמימות בלבד. עצימות גבוהה, זמן קצר עד עייפות.</div>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="tl-left"><div class="tl-dot" style="background:var(--green); border-color:var(--green)"></div><div class="tl-line"></div></div>
+        <div class="tl-content">
+          <div class="tl-time">2+ דקות — שעות</div>
+          <div class="tl-title">🌿 מערכת אירובית (Oxidative Phosphorylation)</div>
+          <div class="tl-desc">גליקוליזה → מעגל קרבס → שרשרת אלקטרונים. 32-36 ATP ממולקולת גלוקוז אחת! 3 דלקים: פחמימות, שומן, חלבון.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid grid-2">
+
+    <!-- הומיאוסטזיס -->
+    <div class="card" onclick="toggleCard(this)">
+      <div class="card-header">
+        <div class="card-icon">⚖️</div>
+        <div style="flex:1">
+          <div class="card-title">הומיאוסטזיס</div>
+          <div class="card-title-en">Homeostasis</div>
+          <div class="card-preview">שיווי המשקל הפנימי</div>
+        </div>
+        <div class="toggle-icon">▼</div>
+      </div>
+      <div class="card-body">
+        <div class="highlight">נטיית הגוף להתנגד לשינויים ולשמור על סביבה פנימית <strong>יציבה ועקבית</strong>.</div>
+        <div class="info-row"><div class="info-dot"></div><div class="info-text">לפי חוק שימור האנרגיה — אנרגיה <strong>לא נעלמת</strong>, רק משנה צורה</div></div>
+        <div class="info-row"><div class="info-dot"></div><div class="info-text">מטבע האנרגיה העיקרי: <strong>ATP</strong></div></div>
+        <div class="info-row"><div class="info-dot"></div><div class="info-text">כל שינוי צורה → פליטת <strong>חום</strong></div></div>
+      </div>
+    </div>
+
+    <!-- לקטט -->
+    <div class="card" onclick="toggleCard(this)">
+      <div class="card-header">
+        <div class="card-icon">🥛</div>
+        <div style="flex:1">
+          <div class="card-title">לקטט וסף חומצת החלב</div>
+          <div class="card-title-en">Lactate & Lactate Threshold</div>
+          <div class="card-preview">מתי מרגישים את "הצריבה"?</div>
+        </div>
+        <div class="toggle-icon">▼</div>
+      </div>
+      <div class="card-body">
+        <div class="highlight red"><strong>סף חומצת החלב</strong> = הנקודה שבה קצב ייצור הלקטט עולה על קצב הפירוק שלו.</div>
+        <div class="info-row"><div class="info-dot"></div><div class="info-text">הצטברות לקטט → כאב ועייפות שרירית</div></div>
+        <div class="info-row"><div class="info-dot"></div><div class="info-text"><strong>התאוששות אקטיבית</strong> מאיצה פינוי לקטט</div></div>
+        <div class="info-row"><div class="info-dot"></div><div class="info-text">שיפור כושר אירובי = <strong>דחיית הסף</strong> — אפשר להתמיד זמן ארוך יותר</div></div>
+      </div>
+    </div>
+
+    <!-- VO2max -->
+    <div class="card" onclick="toggleCard(this)">
+      <div class="card-header">
+        <div class="card-icon">🫁</div>
+        <div style="flex:1">
+          <div class="card-title">VO₂max</div>
+          <div class="card-title-en">Maximum Oxygen Uptake</div>
+          <div class="card-preview">מדד הכושר האירובי</div>
+        </div>
+        <div class="toggle-icon">▼</div>
+      </div>
+      <div class="card-body">
+        <div class="highlight green">הקצב המרבי שבו אדם מצליח להפיק אנרגיה בתהליכים אירוביים.</div>
+        <div class="info-row"><div class="info-dot"></div><div class="info-text">VO₂max גבוה = יותר אנרגיה, התמדה ממושכת יותר</div></div>
+        <div class="info-row"><div class="info-dot"></div><div class="info-text">שימוש יעיל בחמצן = ביצועים טובים יותר</div></div>
+        <div class="info-row"><div class="info-dot"></div><div class="info-text">הגוף מגיע לעייפות <strong>מאוחר יותר</strong></div></div>
+      </div>
+    </div>
+
+    <!-- אזורי דופק -->
+    <div class="card" onclick="toggleCard(this)">
+      <div class="card-header">
+        <div class="card-icon">💓</div>
+        <div style="flex:1">
+          <div class="card-title">אזורי דופק</div>
+          <div class="card-title-en">Heart Rate Zones</div>
+          <div class="card-preview">דופק מרבי = 220 − גיל</div>
+        </div>
+        <div class="toggle-icon">▼</div>
+      </div>
+      <div class="card-body">
+        <table class="compare-table">
+          <tr><th>זון</th><th>% מדופק מרבי</th><th>אפקט</th></tr>
+          <tr><td>Zone 1 — Very Light</td><td>50–60%</td><td>בריאות כללית, התאוששות</td></tr>
+          <tr><td>Zone 2 — Light</td><td>60–70%</td><td>שריפת שומן, סיבולת בסיסית</td></tr>
+          <tr><td>Zone 3 — Moderate</td><td>70–80%</td><td>שיפור כושר אירובי</td></tr>
+          <tr><td>Zone 4 — Hard</td><td>80–90%</td><td>שיפור ביצועים מרביים</td></tr>
+          <tr><td>Zone 5 — Maximum</td><td>90–100%</td><td>פיתוח מהירות וכוח</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <!-- מערכת עצבים -->
+    <div class="card" onclick="toggleCard(this)">
+      <div class="card-header">
+        <div class="card-icon">🧠</div>
+        <div style="flex:1">
+          <div class="card-title">מערכת העצבים</div>
+          <div class="card-title-en">Nervous System</div>
+          <div class="card-preview">CNS + PNS</div>
+        </div>
+        <div class="toggle-icon">▼</div>
+      </div>
+      <div class="card-body">
+        <div class="highlight">מעבדת ומעבירה מידע UP ↕ DOWN.</div>
+        <div class="info-row"><div class="info-dot"></div><div class="info-text"><strong>CNS</strong> (Central) = מוח + חוט שדרה — שליטה ועיבוד</div></div>
+        <div class="info-row"><div class="info-dot"></div><div class="info-text"><strong>PNS</strong> (Peripheral) = עצבים פריפריים — קשר לאיברים</div></div>
+        <div class="info-row"><div class="info-dot"></div><div class="info-text">PNS = סומטית (רצונית) + <strong>אוטונומית</strong></div></div>
+        <div class="highlight red">עם הגיל: ירידה במהירות הולכת אותות → האטה בזמן תגובה ובמהירות תנועה</div>
+      </div>
+    </div>
+
+    <!-- מערכת קרדיו -->
+    <div class="card" onclick="toggleCard(this)">
+      <div class="card-header">
+        <div class="card-icon">🫀</div>
+        <div style="flex:1">
+          <div class="card-title">המערכת הקרדיו-וסקולרית</div>
+          <div class="card-title-en">Cardiovascular System</div>
+          <div class="card-preview">הלב כמשאבה</div>
+        </div>
+        <div class="toggle-icon">▼</div>
+      </div>
+      <div class="card-body">
+        <div class="info-row"><div class="info-dot"></div><div class="info-text"><strong>עורקים</strong> — מהלב → גוף, עשירים בחמצן</div></div>
+        <div class="info-row"><div class="info-dot"></div><div class="info-text"><strong>ורידים</strong> — מהגוף → לב, עשירים ב-CO₂</div></div>
+        <div class="info-row"><div class="info-dot"></div><div class="info-text">הלב = 4 מדורים: 2 עליות + 2 חדרים</div></div>
+        <div class="highlight" style="margin-top:10px">תגובה לאימון: ↑ תפוקת לב | ↓ TPR (אירובי) | ↑ TPR (אנאירובי) | שיפור VO₂max</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════
+     TAB 6 — GLOSSARY
+══════════════════════════════════════════ -->
+<div class="section" id="sec-glossary">
+  <div class="page-title">מילון מונחים</div>
+  <div class="page-sub">Glossary — כל המושגים של מפגש 01</div>
+
+  <div id="glossaryList">
+    <div class="glossary-item"><div class="glos-he">אנטומיה</div><div class="glos-en">Anatomy</div><div class="glos-def">מדע העוסק במבנה גוף האדם ויחסי הגומלין בין מבנה לתפקוד.</div></div>
+    <div class="glossary-item"><div class="glos-he">תא</div><div class="glos-en">Cell</div><div class="glos-def">יחידת החיים הבסיסית — קטנה ביותר שמתקיימים בה כל מאפייני החיים.</div></div>
+    <div class="glossary-item"><div class="glos-he">רקמה</div><div class="glos-en">Tissue</div><div class="glos-def">צבר תאים בעלי מוצא, תפקוד ומבנה משותפים. 4 סוגים: עצב, שריר, חיבור, אפיתל.</div></div>
+    <div class="glossary-item"><div class="glos-he">רקמת חיבור</div><div class="glos-en">Connective Tissue</div><div class="glos-def">מורכבת בעיקר מקולגן. מרבית רקמות הגוף: גידים, רצועות, סחוס, עצם.</div></div>
+    <div class="glossary-item"><div class="glos-he">עצם</div><div class="glos-en">Bone</div><div class="glos-def">רקמת חיבור קשה — רקמה חיה הנהרסת ונבנית לאורך כל החיים. 206 עצמות בגוף בוגר.</div></div>
+    <div class="glossary-item"><div class="glos-he">אוסטיאובלסטים</div><div class="glos-en">Osteoblasts</div><div class="glos-def">תאים בוני עצם — פעילות מוגברת בינקות.</div></div>
+    <div class="glossary-item"><div class="glos-he">אוסטיאוקלסטים</div><div class="glos-en">Osteoclasts</div><div class="glos-def">תאים מפרקי עצם — פעילות מוגברת בגיל מבוגר.</div></div>
+    <div class="glossary-item"><div class="glos-he">חוק וולף</div><div class="glos-en">Wolff's Law</div><div class="glos-def">עצם מתפתחת בהתאם לעומס שמופעל עליה, כל עוד העומס אינו רציף ובגבולות הפיזיולוגיים.</div></div>
+    <div class="glossary-item"><div class="glos-he">אוסטיאופורוזיס</div><div class="glos-en">Osteoporosis</div><div class="glos-def">ירידה במסת וצפיפות העצם. מאובחן ב-DEXA. נפוץ בנשים אחרי גיל המעבר.</div><div class="glos-note">המחלה השקטה | אוסטיאופניה = מצב מקדים</div></div>
+    <div class="glossary-item"><div class="glos-he">מפרק</div><div class="glos-en">Joint</div><div class="glos-def">נקודת מפגש בין שתי עצמות. 3 סוגים: פיברוטי, סחוסי, סינוביאלי.</div></div>
+    <div class="glossary-item"><div class="glos-he">מפרק סינוביאלי</div><div class="glos-en">Synovial Joint</div><div class="glos-def">מפרק בעל תנועה מרובה עם קפסולה מפרקית ונוזל סינוביאלי. כולל Ball & Socket, Hinge, Pivot.</div></div>
+    <div class="glossary-item"><div class="glos-he">רצועה</div><div class="glos-en">Ligament</div><div class="glos-def">רקמת חיבור קולגן המחברת עצם לעצם. תפקיד: הגבלת תנועה ויציבות.</div><div class="glos-note">נקע = Sprain = פגיעה ברצועה</div></div>
+    <div class="glossary-item"><div class="glos-he">גיד</div><div class="glos-en">Tendon</div><div class="glos-def">רקמת חיבור סיבית המחברת שריר לעצם. מעביר כוח ויוצר תנועה.</div></div>
+    <div class="glossary-item"><div class="glos-he">סחוס</div><div class="glos-en">Cartilage</div><div class="glos-def">רקמת חיבור קשיחה אך גמישה. ללא כלי דם → ריפוי מוגבל. היאליני, אלסטי, פיברוטי.</div></div>
+    <div class="glossary-item"><div class="glos-he">שריר</div><div class="glos-en">Muscle</div><div class="glos-def">רקמה בעלת כושר התכווצות והרפיה. 3 סוגים: משורטט, חלק, לב.</div></div>
+    <div class="glossary-item"><div class="glos-he">אקטין / מיוזין</div><div class="glos-en">Actin / Myosin</div><div class="glos-def">חלבוני הכיווץ בשריר. אקטין = סיב דק, מיוזין = סיב עבה. Sliding filament theory.</div></div>
+    <div class="glossary-item"><div class="glos-he">כיווץ קונצנטרי</div><div class="glos-en">Concentric Contraction</div><div class="glos-def">כיווץ תוך קיצור השריר (Isotonic).</div></div>
+    <div class="glossary-item"><div class="glos-he">כיווץ אקסצנטרי</div><div class="glos-en">Eccentric Contraction</div><div class="glos-def">כיווץ תוך התארכות השריר (Isotonic).</div></div>
+    <div class="glossary-item"><div class="glos-he">כיווץ איזומטרי</div><div class="glos-en">Isometric Contraction</div><div class="glos-def">כיווץ ללא שינוי באורך השריר.</div></div>
+    <div class="glossary-item"><div class="glos-he">היפרטרופיה</div><div class="glos-en">Hypertrophy</div><div class="glos-def">עלייה בחתך הרוחב של סיב השריר. קצב ייצור חלבונים גדול מקצב הפירוק.</div></div>
+    <div class="glossary-item"><div class="glos-he">מישור סגיטלי</div><div class="glos-en">Sagittal Plane</div><div class="glos-def">מחלק לימין ושמאל. תנועות: Flexion, Extension.</div></div>
+    <div class="glossary-item"><div class="glos-he">מישור קורונלי</div><div class="glos-en">Coronal / Frontal Plane</div><div class="glos-def">מחלק לחזית ואחור. תנועות: Abduction, Adduction.</div></div>
+    <div class="glossary-item"><div class="glos-he">מישור הוריזונטלי</div><div class="glos-en">Transverse Plane</div><div class="glos-def">מחלק לעליון ותחתון. תנועות: Rotation, Supination, Pronation.</div></div>
+    <div class="glossary-item"><div class="glos-he">הומיאוסטזיס</div><div class="glos-en">Homeostasis</div><div class="glos-def">נטיית הגוף לשמור על סביבה פנימית יציבה ועקבית.</div></div>
+    <div class="glossary-item"><div class="glos-he">ATP</div><div class="glos-en">Adenosine Triphosphate</div><div class="glos-def">מטבע האנרגיה העיקרי של התא. מיוצר ממסלולים מטבוליים שונים.</div></div>
+    <div class="glossary-item"><div class="glos-he">סף חומצת החלב</div><div class="glos-en">Lactate Threshold</div><div class="glos-def">הנקודה שבה ייצור הלקטט עולה על פינויו — גורמת לכאב ועייפות שרירית.</div></div>
+    <div class="glossary-item"><div class="glos-he">VO₂max</div><div class="glos-en">Maximal Oxygen Uptake</div><div class="glos-def">הקצב המרבי שבו אדם מפיק אנרגיה בתהליכים אירוביים. מדד לכושר אירובי.</div></div>
+    <div class="glossary-item"><div class="glos-he">Proximal</div><div class="glos-en">Proximal</div><div class="glos-def">מקורב לחיבור הגפה אל הגוף, קרוב לשלד הצירי.</div></div>
+    <div class="glossary-item"><div class="glos-he">Distal</div><div class="glos-en">Distal</div><div class="glos-def">מרוחק מחיבור הגפה, רחוק מהשלד הצירי.</div></div>
+    <div class="glossary-item"><div class="glos-he">לברום</div><div class="glos-en">Labrum</div><div class="glos-def">סחוס פיברוטי טבעתי במפרקי Ball & Socket. מעמיק המשטח המפרקי ותורם ליציבות.</div></div>
+    <div class="glossary-item"><div class="glos-he">בורסה</div><div class="glos-en">Bursa</div><div class="glos-def">שקיק קטן המכיל נוזל סיכה. מקטין חיכוך בין מרכיבי מערכת שלד-שריר.</div></div>
+  </div>
+  <div class="no-results" id="glossaryEmpty" style="display:none">לא נמצאו מונחים תואמים 🔍</div>
+</div>
+
+
+<!-- ══════════════════════════════════════════
+     TAB 7 — QUIZ
+══════════════════════════════════════════ -->
+<div class="section" id="sec-quiz">
+  <div class="page-title">חידון — מפגש 01</div>
+  <div class="page-sub">Quiz — בדוק את עצמך!</div>
+  <div class="quiz-counter" id="quizScore">ענית על <span id="answered">0</span> שאלות | ✅ <span id="correct">0</span> נכון | ❌ <span id="wrong">0</span> שגוי</div>
+
+  <div id="quizContainer"></div>
+  <button class="reset-btn" onclick="resetQuiz()">🔄 אפס חידון</button>
+</div>
+
+</main>
+
+<script>
+// ── TAB SWITCHING ──
+function switchTab(name) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('visible'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('sec-' + name).classList.add('visible');
+  event.target.classList.add('active');
+  document.getElementById('searchBox').value = '';
+}
+
+// ── CARD TOGGLE ──
+function toggleCard(el) {
+  // find closest .card
+  const card = el.closest('.card') || (el.classList.contains('card') ? el : null) || el;
+  if (!card) return;
+  card.classList.toggle('expanded');
+}
+
+// ── SEARCH ──
+function doSearch(query) {
+  query = query.trim().toLowerCase();
+  if (!query) {
+    // restore current tab visibility
+    document.querySelectorAll('.section').forEach(s => {
+      s.querySelectorAll('.card, .glossary-item, .plane-card').forEach(c => { c.style.display = ''; });
+    });
+    document.getElementById('glossaryEmpty').style.display = 'none';
+    return;
+  }
+
+  // Search across all sections — show all sections, hide non-matching
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('visible'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+
+  let anyResult = false;
+
+  // Search cards
+  document.querySelectorAll('.card, .glossary-item, .plane-card').forEach(card => {
+    const text = card.innerText.toLowerCase();
+    if (text.includes(query)) {
+      card.style.display = '';
+      const section = card.closest('.section');
+      if (section) section.classList.add('visible');
+      anyResult = true;
+    } else {
+      card.style.display = 'none';
+    }
+  });
+
+  if (!anyResult) {
+    // show glossary section with empty message
+    document.getElementById('sec-glossary').classList.add('visible');
+    document.getElementById('glossaryEmpty').style.display = 'block';
+  } else {
+    document.getElementById('glossaryEmpty').style.display = 'none';
+  }
+}
+
+// ── QUIZ ──
+const quizData = [
+  { q:"מהי יחידת החיים הבסיסית ביותר?", opts:["רקמה","איבר","תא","מערכת"], ans:2 },
+  { q:"כמה עצמות יש בגוף אדם בוגר?", opts:["180","206","220","250"], ans:1 },
+  { q:"איזו רקמה מורכבת בעיקר מקולגן ויוצרת גידים ורצועות?", opts:["רקמת עצב","רקמת אפיתל","רקמת שריר","רקמת חיבור"], ans:3 },
+  { q:"מה ההבדל בין גיד לרצועה?", opts:["גיד מחבר שריר לעצם; רצועה מחברת עצם לעצם","רצועה מחברת שריר לעצם; גיד מחבר עצם לעצם","שניהם מחברים עצם לעצם","שניהם מחברים שריר לשריר"], ans:0 },
+  { q:"מהו סף חומצת החלב?", opts:["הנקודה שבה לקטט מצטבר יותר משמתפנה","רמת ATP מינימלית","מהירות הדופק המרבית","כמות חמצן מינימלית בדם"], ans:0 },
+  { q:"באיזה מישור מתבצעת תנועת Abduction?", opts:["סגיטלי","קורונלי","הוריזונטלי","כל המישורים"], ans:1 },
+  { q:"כיווץ אקסצנטרי = ?", opts:["השריר מתקצר","השריר מתארך","אורך השריר לא משתנה","השריר נרפה לחלוטין"], ans:1 },
+  { q:"מה הוא VO₂max?", opts:["הקצב המרבי של הפקת אנרגיה אנאירובית","כמות החמצן המקסימלית שהגוף יכול לנצל בדקה","מהירות ריצה מרבית","דופק מרבי"], ans:1 },
+  { q:"חוק וולף קובע שעצם...", opts:["נשברת תמיד תחת עומס","מתפתחת בהתאם לעומס המופעל עליה","לא משתנה לאחר גיל 18","מתחדשת רק בינקות"], ans:1 },
+  { q:"מהי בורסה?", opts:["סוג של רצועה","שקיק נוזל המקטין חיכוך","חלק מהמפרק הסינוביאלי","סחוס פיברוטי"], ans:1 },
+  { q:"Proximal = ?", opts:["רחוק מהשלד הצירי","קרוב לקו האמצע","מקורב לחיבור הגפה — קרוב לשלד הצירי","קרוב לחזית הגוף"], ans:2 },
+  { q:"מהם Type 1 muscle fibers?", opts:["מהירים, מתעייפים מהר","אדומים, יציבתיים, סיבולת גבוהה","לבנים, מניעים, אנאירוביים","שרירי לב בלבד"], ans:1 },
+  { q:"איזו בדיקה מאבחנת אוסטיאופורוזיס?", opts:["MRI","CT","DEXA","אולטרסאונד"], ans:2 },
+  { q:"מפרק Hinge מאפשר תנועה...", opts:["בכל המישורים","רק סיבובית","במישור אחד בלבד","בשני מישורים"], ans:2 },
+  { q:"מה עושה Prime Mover?", opts:["מסייע לשריר העיקרי","שריר העיקרי המבצע את תנועת המפרק","יוצר תנועה הפוכה","שומר על מנח בכיווץ איזומטרי"], ans:1 },
+];
+
+let scores = { answered: 0, correct: 0, wrong: 0 };
+
+function buildQuiz() {
+  const container = document.getElementById('quizContainer');
+  container.innerHTML = '';
+  quizData.forEach((q, i) => {
+    const div = document.createElement('div');
+    div.className = 'quiz-card';
+    div.innerHTML = `
+      <div class="quiz-question">${i+1}. ${q.q}</div>
+      <div class="quiz-options">
+        ${q.opts.map((o,j) => `<button class="quiz-opt" onclick="answerQ(this,${i},${j})">${o}</button>`).join('')}
+      </div>
+      <div class="quiz-feedback" id="fb-${i}"></div>
+    `;
+    container.appendChild(div);
+  });
+  updateScore();
+}
+
+function answerQ(btn, qi, chosen) {
+  const card = btn.closest('.quiz-card');
+  const buttons = card.querySelectorAll('.quiz-opt');
+  if (btn.classList.contains('disabled')) return;
+  buttons.forEach(b => b.classList.add('disabled'));
+  const correct = quizData[qi].ans;
+  buttons[correct].classList.add('correct');
+  const fb = document.getElementById('fb-' + qi);
+  if (chosen === correct) {
+    btn.classList.add('correct');
+    fb.textContent = '✅ נכון! ';
+    fb.className = 'quiz-feedback show ok';
+    scores.correct++;
+  } else {
+    btn.classList.add('wrong');
+    fb.textContent = '❌ לא נכון. התשובה הנכונה: ' + quizData[qi].opts[correct];
+    fb.className = 'quiz-feedback show err';
+    scores.wrong++;
+  }
+  scores.answered++;
+  updateScore();
+}
+
+function updateScore() {
+  document.getElementById('answered').textContent = scores.answered;
+  document.getElementById('correct').textContent = scores.correct;
+  document.getElementById('wrong').textContent = scores.wrong;
+}
+
+function resetQuiz() {
+  scores = { answered:0, correct:0, wrong:0 };
+  buildQuiz();
+}
+
+buildQuiz();
+</script>
+</body>
+</html>
